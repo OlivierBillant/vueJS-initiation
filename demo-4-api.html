@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="titre" placeholder="Film" />
+    <br /><br />
+
+    <button onclick="afficher()">GO</button>
+    <br /><br />
+
+    <h1 id="demo">ICI</h1>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.js"
+      integrity="sha512-rozBdNtS7jw9BlC76YF1FQGjz17qQ0J/Vu9ZCFIW374sEy4EZRbRcUZa2RU/MZ90X2mnLU56F75VfdToGV0RiA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script>
+      function afficher() {
+        let valeur = document.getElementById("titre").value;
+        let demo = document.getElementById("demo");
+        let h2 = document.createElement('h2');
+
+        //vider le champ input et demo
+        demo.innerHTML = "";
+        document.getElementById("titre").value = "";
+        valeur = valeur.toUpperCase();
+
+        let url = "http://omdbapi.com/?apikey=c91043f9&t=" + valeur;
+        axios.get(url).then((response) => {
+          let film = response.data;
+          console.log(film.Title);
+          demo.innerHTML = film.Title + film.Year;
+          h2.innerHTML = film.Title;
+          demo.appendChild(h2);
+
+          //creation d'une balise image
+          let img = document.createElement("img");
+          img.setAttribute("src", film.Poster);
+
+          // On met l'image dans la balise demo
+          demo.appendChild(img);
+         
+        });
+        console.log("OK !");
+      }
+    </script>
+  </body>
+</html>

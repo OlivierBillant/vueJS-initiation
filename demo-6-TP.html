@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="titre" placeholder="Film" />
+    <br /><br />
+
+    <button onclick="afficher()">GO</button>
+    <br /><br />
+
+    <h1 id="demo">ICI</h1>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.js"
+      integrity="sha512-rozBdNtS7jw9BlC76YF1FQGjz17qQ0J/Vu9ZCFIW374sEy4EZRbRcUZa2RU/MZ90X2mnLU56F75VfdToGV0RiA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script>
+      function afficher() {
+        let valeur = document.getElementById("titre").value;
+        let demo = document.getElementById("demo");
+
+        //vider le champ input et demo
+        demo.innerHTML = "";
+        document.getElementById("titre").value = "";
+        valeur = valeur.toUpperCase();
+
+        // On récupère la liste des 10 premiers films correspondant au titre
+        let url = "http://omdbapi.com/?apikey=c91043f9&s=" + valeur;
+        axios.get(url).then((response) => {
+        let liste_film = response.data.Search;
+
+          //   Pour chaque film de la réponse
+          //   On crée un élémnt titre de niveau h3
+          for (film of liste_film) {
+            let h1 = document.createElement("h3");
+            console.log(film);
+            console.log(film.imdbID);
+            // On ajoute le titre et l'année au titre h3
+            h1.innerHTML = "Titre : " + film.Title + " <br>Année : " + film.Year
+            // On crée une seconde requête sur l'id du film pour obtenir les infos détaillées
+            // On extrait alors l'imdbRating des infos détaillées
+            let url2 = "http://omdbapi.com/?apikey=c91043f9&i=" + film.imdbID;
+            axios.get(url2).then((response) => {
+              console.log(response.data.imdbRating);
+              note = response.data.imdbRating;
+              //   On ajoute la note aux infos précédentes
+              h1.innerHTML += ' <br>Note : '+ note + "/10";
+            });
+
+            // On affiche notre titre
+            demo.appendChild(h1);
+
+            //creation d'une balise image
+            let img = document.createElement("img");
+            img.setAttribute("src", film.Poster);
+
+            // On met l'image dans la balise demo
+            // On affiche l'image
+            demo.appendChild(img);
+          }
+        });
+        console.log("OK !");
+      }
+    </script>
+  </body>
+</html>
