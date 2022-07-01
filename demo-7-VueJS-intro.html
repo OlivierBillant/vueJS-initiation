@@ -17,8 +17,8 @@
       <h1>{{ titre }}</h1>
       <h1>{{ couleur }}</h1>
       <button @click="afficher">Go</button>
-      <input v-model="valeur">
-      <br><br>
+      <input v-model="valeur" />
+      <br /><br />
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -28,13 +28,13 @@
         data: {
           titre: "titre test",
           couleur: "rouge",
-          valeur: 'toto',
+          valeur: "toto",
         },
         methods: {
           afficher() {
-            // this.titre = this.titre.toUpperCase();
             this.titre = this.valeur;
-            this.valeur = '';
+            this.titre = this.titre.toUpperCase();
+            this.valeur = "";
           },
         },
       });

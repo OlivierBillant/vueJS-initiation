@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app" class="container my-3 text-center">
+      <div class="col-4">
+        <div>
+          <h1>{{ titre }}</h1>
+          <h1>{{ couleur }}</h1>
+          <button @click="afficher" class="btn btn-primary">Go</button>
+          <input v-model="valeur" class="form-control" placeholder="Film" />
+          <table>
+            <tr v-for="(film,i) in films">
+              <td><img :src="film.Poster" alt="" /></td>
+              <td>{{ film.Title }}</td>
+              <td>{{ film.Year }}</td>
+              <td><button class="btn btn-primary" @click="ajouter(i)">ADD</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+      const app = new Vue({
+        el: "#app",
+        data: {
+          titre: "titre test",
+          couleur: "rouge",
+          valeur: "toto",
+          films: [],
+        },
+        methods: {
+          afficher() {
+            // this.titre = this.titre.toUpperCase();
+            let film = this.valeur;
+            this.titre = this.valeur;
+            this.valeur = "";
+            let url = "http://omdbapi.com/?apikey=c91043f9&s=" + film;
+            axios.get(url).then((response) => {
+              this.films = response.data.Search;
+            });
+          },
+          ajouter(i){
+            let film = this.films[i];
+            console.log(film);
+            this.films.splice(i,1); //indice, nb de ligne à effacer
+          }
+        },
+      });
+    </script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.js"
+      integrity="sha512-rozBdNtS7jw9BlC76YF1FQGjz17qQ0J/Vu9ZCFIW374sEy4EZRbRcUZa2RU/MZ90X2mnLU56F75VfdToGV0RiA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  </body>
+</html>
