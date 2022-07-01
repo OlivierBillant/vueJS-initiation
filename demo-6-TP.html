@@ -4,17 +4,25 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
     <title>Document</title>
   </head>
   <body>
-    <input type="text" id="titre" placeholder="Film" />
-    <br /><br />
+    <div class="text-center">
+      <div class="mt-5">
+        <input type="text" id="titre" placeholder="Film" />
+        <button class="btn btn-primary" onclick="afficher()">Va chercher Lycos</button>
+      </div>
 
-    <button onclick="afficher()">GO</button>
-    <br /><br />
+      <br /><br />
 
-    <h1 id="demo">ICI</h1>
-
+      <h3 id="demo">Aucun résultat trouvé</h3>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.js"
       integrity="sha512-rozBdNtS7jw9BlC76YF1FQGjz17qQ0J/Vu9ZCFIW374sEy4EZRbRcUZa2RU/MZ90X2mnLU56F75VfdToGV0RiA=="
@@ -35,7 +43,7 @@
         // On récupère la liste des 10 premiers films correspondant au titre
         let url = "http://omdbapi.com/?apikey=c91043f9&s=" + valeur;
         axios.get(url).then((response) => {
-        let liste_film = response.data.Search;
+          let liste_film = response.data.Search;
 
           //   Pour chaque film de la réponse
           //   On crée un élémnt titre de niveau h3
@@ -44,7 +52,8 @@
             console.log(film);
             console.log(film.imdbID);
             // On ajoute le titre et l'année au titre h3
-            h1.innerHTML = "Titre : " + film.Title + " <br>Année : " + film.Year
+            h1.innerHTML =
+              "Titre : " + film.Title + " <br>Année : " + film.Year;
             // On crée une seconde requête sur l'id du film pour obtenir les infos détaillées
             // On extrait alors l'imdbRating des infos détaillées
             let url2 = "http://omdbapi.com/?apikey=c91043f9&i=" + film.imdbID;
@@ -52,7 +61,7 @@
               console.log(response.data.imdbRating);
               note = response.data.imdbRating;
               //   On ajoute la note aux infos précédentes
-              h1.innerHTML += ' <br>Note : '+ note + "/10";
+              h1.innerHTML += " <br>Note : " + note + "/10";
             });
 
             // On affiche notre titre
@@ -61,6 +70,7 @@
             //creation d'une balise image
             let img = document.createElement("img");
             img.setAttribute("src", film.Poster);
+            img.setAttribute("width", '150px');
 
             // On met l'image dans la balise demo
             // On affiche l'image
